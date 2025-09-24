@@ -119,14 +119,14 @@ class SMArT_Qwen(nn.Module):
         if configs.is_gpt:
             if configs.pretrain:
                 self.qwen = AutoModel.from_pretrained(
-                    "../pretrain/Qwen2.5-1.5B",
+                    "../pretrain/Qwen3-1.7B",
                     trust_remote_code=True,
                     output_attentions=True,
                     output_hidden_states=True
                 )
             else:
                 print("------------------no pretrain------------------")
-                config = AutoConfig.from_pretrained("Qwen/Qwen2.5-1.5B", trust_remote_code=True)
+                config = AutoConfig.from_pretrained("Qwen/Qwen3-1.7B", trust_remote_code=True)
                 self.qwen = AutoModel(config)
 
         if hasattr(self.qwen, "layers"):
@@ -142,7 +142,7 @@ class SMArT_Qwen(nn.Module):
         )
         self.fusion_layer = nn.Linear(self.patch_embeddings * 2, configs.d_model)
         self.out_layer = nn.Linear(configs.d_model * self.patch_num, configs.pred_len)
-        self.text_prompt = torch.load('../embeddings/text_prompts_Qwen1-5B.pt')
+        self.text_prompt = torch.load('../embeddings/text_prompts_Qwen3-17B.pt')
         # self.text_prompt = torch.load('../embeddings/text_prompts_Qwen0-5B.pt')
         self.trend_layer = nn.Linear(configs.seq_len, configs.d_model)
         self.seasonal_layer = nn.Linear(configs.seq_len, configs.d_model)
